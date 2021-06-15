@@ -19,18 +19,41 @@ function ExpenseForm() {
 		setDate(event.target.value);
 	};
 
+	const submitFormHandler = (event) => {
+		event.preventDefault();
+
+		const formatDate = new Date(date);
+
+		formatDate.setMinutes(
+			formatDate.getTimezoneOffset() + formatDate.getMinutes()
+		);
+
+		const data = {
+			title,
+			amount,
+			date: formatDate,
+		};
+
+		console.log(data);
+
+		setTitle("");
+		setAmount("");
+		setDate("");
+	};
+
 	return (
-		<form>
+		<form onSubmit={submitFormHandler}>
 			<section className="new-expense__controls">
 				<fieldset className="new-expense__control">
 					<label>Title</label>
-					<input type="text" onChange={titleChangeHandler} />
+					<input type="text" value={title} onChange={titleChangeHandler} />
 				</fieldset>
 
 				<fieldset className="new-expense__control">
 					<label>Amount</label>
 					<input
 						type="number"
+						value={amount}
 						min="0.01"
 						step="0.01"
 						onChange={amountChangeHandler}
@@ -39,7 +62,12 @@ function ExpenseForm() {
 
 				<fieldset className="new-expense__control">
 					<label>Date</label>
-					<input type="date" min="2021-01-01" onChange={dateChangeHandler} />
+					<input
+						type="date"
+						value={date}
+						min="2021-01-01"
+						onChange={dateChangeHandler}
+					/>
 				</fieldset>
 			</section>
 
